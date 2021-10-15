@@ -49,7 +49,7 @@ function draw() {
  
  if(gameState === PLAY)
  {
-        
+  console.log(frameCount)
       // // moving ground
        scene.velocityX = -3 
       // //destroy bow
@@ -62,7 +62,9 @@ function draw() {
        bow.y = World.mouseY      
       // //stop background movement
       // scene.velocityX = 0;
-
+      if (arrowGroup.isTouching(redB)) {
+        score=score+5
+      }
   
    // release arrow when space key is pressed
   if (keyDown("space")) {
@@ -89,6 +91,7 @@ function draw() {
 
 
   if (gameState === END) {
+    text("game over",300,100)
     /*Uncomment correct option 
       according to END state*/  
       // // moving ground
@@ -103,12 +106,15 @@ function draw() {
       // bow.y = World.mouseY      
       // //stop background movement
        scene.velocityX = 0;
-
+       textSize=50
+      text("game over",300,100)
   }
 
-if (frameCount>700) {
-  red.destroyEach();
+if (frameCount>200) {
+  //red.destroyEach();
   gameState=END; 
+  
+    
 }
 
 
@@ -146,6 +152,7 @@ function blueBalloon() {
   blue.velocityX = 3;
   blue.lifetime = 150;
   blue.scale = 0.1;
+  redB.add(blue)
 }
 
 function greenBalloon() {
@@ -154,6 +161,7 @@ function greenBalloon() {
   green.velocityX = 3;
   green.lifetime = 150;
   green.scale = 0.1;
+  redB.add(green)
 }
 
 function pinkBalloon() {
@@ -162,7 +170,7 @@ function pinkBalloon() {
   pink.velocityX = 3;
   pink.lifetime = 150;
   pink.scale = 1
-
+  redB.add(pink)
 }
 
 // Creating  arrows for bow
@@ -175,5 +183,4 @@ function pinkBalloon() {
   arrow.lifetime = 100;
   arrow.scale = 0.3;
   arrowGroup.add(arrow);
-
 }
