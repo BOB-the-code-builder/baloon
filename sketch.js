@@ -63,7 +63,9 @@ function draw() {
       // //stop background movement
       // scene.velocityX = 0;
       if (arrowGroup.isTouching(redB)) {
-        score=score+5
+        score=score+1
+        redB.setVelocityXEach(0);
+        redB.setVelocityYEach(-4);
       }
   
    // release arrow when space key is pressed
@@ -110,10 +112,9 @@ function draw() {
       text("game over",300,100)
   }
 
-if (frameCount>200) {
+if (frameCount>2000) {
   //red.destroyEach();
   gameState=END; 
-  
     
 }
 
@@ -175,12 +176,15 @@ function pinkBalloon() {
 
 // Creating  arrows for bow
  function createArrow() {
-  var arrow= createSprite(100, 100, 60, 10);
-  arrow.addImage(arrowImage);
-  arrow.x = 360;
-  arrow.y=bow.y;
-  arrow.velocityX = -4;
-  arrow.lifetime = 100;
-  arrow.scale = 0.3;
-  arrowGroup.add(arrow);
+   if (frameCount%50==0) {
+    var arrow= createSprite(100, 100, 60, 2);
+    arrow.addImage(arrowImage);
+    arrow.x = 360;
+    arrow.y=bow.y;
+    arrow.velocityX = -4;
+    arrow.lifetime = 100;
+    arrow.scale = 0.3;
+    arrowGroup.add(arrow);
+   }
+  
 }
