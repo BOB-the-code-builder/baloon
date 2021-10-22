@@ -1,4 +1,3 @@
-
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
@@ -36,41 +35,32 @@ function setup() {
   
    score = 0  
   redB= new Group();
- 
+  greenB= new Group();
+  blueB= new Group();
+  pinkB= new Group();
   arrowGroup= new Group();
-
+ 
   
 }
 
 function draw() {
  background(0);
- 
+ if(gameState === PLAY){
 
- 
- if(gameState === PLAY)
- {
-  console.log(frameCount)
-      // // moving ground
-       scene.velocityX = -3 
-      // //destroy bow
-      // bow.destroy();
-      // //reset the background
-       if (scene.x < 0){
-           scene.x = scene.width/2;
-          }
-      // //moving bow
-       bow.y = World.mouseY      
-      // //stop background movement
-      // scene.velocityX = 0;
-      if (arrowGroup.isTouching(redB)) {
-        score=score+1
-        redB.setVelocityXEach(0);
-        redB.setVelocityYEach(-4);
-      }
+  // moving ground
+    scene.velocityX = -3 
+
+    if (scene.x < 0){
+      scene.x = scene.width/2;
+    }
+  
+  //moving bow
+  bow.y = World.mouseY
   
    // release arrow when space key is pressed
   if (keyDown("space")) {
-    createArrow();  
+    createArrow();
+    
   }
   
   //creating continous enemies
@@ -89,53 +79,85 @@ function draw() {
       default:break;
     }
   }
- }
 
-
-  if (gameState === END) {
-    text("game over",300,100)
-    /*Uncomment correct option 
-      according to END state*/  
-      // // moving ground
-      // scene.velocityX = -3 
-       //destroy bow
-       bow.destroy();
-      // //reset the background
-       if (scene.x < 0){
-           scene.x = scene.width/2;
-          }
-      // //moving bow
-      // bow.y = World.mouseY      
-      // //stop background movement
-       scene.velocityX = 0;
-       textSize=50
-      text("game over",300,100)
+  /*Uncomment correct statement so that 
+  game goes to "END" state 
+  when red balloon is hit*/
+  if (arrowGroup.isTouching(redB)) {
+    redB.velocityX=0
+    arrowGroup.velocityX=0
+    gameState=END;
   }
-
-if (frameCount>2000) {
-  //red.destroyEach();
-  gameState=END; 
-    
+  //if (arrowGroup.Collide(redB)) 
+  //if (arrowGroup.isCollide(redB)) 
+  if(frameCount>1700)//comment this line after selecting the solution
+  {
+    redB.destroyEach();
+    gameState=END; 
+   }
+ 
+  if (gameState === END) {
+  bow.destroy();
+  arrowGroup.destroyEach();
+  redB.destroyEach();
+  blueB.destroyEach();
+  pinkB.destroyEach();
+  greenB.destroyEach();
+  scene.velocityX = 0;
 }
 
 
+ if (arrowGroup.isTouching(greenB)) {
+  greenB.destroyEach();
+  arrowGroup.destroyEach();
+  score=score+3;
 
 
- 
+
+  arrowGroup.setColliderEach("rect",0,0,60,5);
+  arrowGroup.debug=true
+  redB.setColliderEach("circle",0,0,10);
+  redB.debug=true
+  blueB.setColliderEach("circle",0,0,10);
+  blueB.debug=true
+  pinkB.setColliderEach("circle",0,0,10);
+  pinkB.debug=true
+  greenB.setColliderEach("circle",0,0,10);
+  greenB.debug=true
+}
+
+/*Uncomment correct if block to 
+destroy the blue balloon when hit 
+by the arrows */
+
+  if (arrowGroup.isTouching(blueB)) {
+   blueB.destroyEach();
+   arrowGroup.destroyEach();
+   score=score+2;
+ }
+
+
+//  if (arrowGroup.isTouching(redB)) {
+//   blueB.destroyEach();
+//   arrowGroup.destroyEach();
+// }
+
+
+//  if (arrowGroup.isTouching(blueB)) {
+//   arrowGroup.destroyEach();
+// }
+
+
+if (arrowGroup.isTouching(pinkB)) {
+  pinkB.destroyEach();
+  arrowGroup.destroyEach();
+  score=score+1;
+}
+ }
   
   drawSprites();
   text("Score: "+ score, 300,50);
 }
-
-
-
-
-
-
-
-
-
-
 
 
 function redBalloon() {
@@ -153,7 +175,7 @@ function blueBalloon() {
   blue.velocityX = 3;
   blue.lifetime = 150;
   blue.scale = 0.1;
-  redB.add(blue)
+  blueB.add(blue);
 }
 
 function greenBalloon() {
@@ -162,7 +184,7 @@ function greenBalloon() {
   green.velocityX = 3;
   green.lifetime = 150;
   green.scale = 0.1;
-  redB.add(green)
+  greenB.add(green);
 }
 
 function pinkBalloon() {
@@ -171,20 +193,19 @@ function pinkBalloon() {
   pink.velocityX = 3;
   pink.lifetime = 150;
   pink.scale = 1
-  redB.add(pink)
+  pinkB.add(pink);
 }
+
 
 // Creating  arrows for bow
  function createArrow() {
-   if (frameCount%50==0) {
-    var arrow= createSprite(100, 100, 60, 2);
-    arrow.addImage(arrowImage);
-    arrow.x = 360;
-    arrow.y=bow.y;
-    arrow.velocityX = -4;
-    arrow.lifetime = 100;
-    arrow.scale = 0.3;
-    arrowGroup.add(arrow);
-   }
-  
+  var arrow= createSprite(100, 100, 60, 10);
+  arrow.addImage(arrowImage);
+  arrow.x = 360;
+  arrow.y=bow.y;
+  arrow.velocityX = -4;
+  arrow.lifetime = 100;
+  arrow.scale = 0.3;
+  arrowGroup.add(arrow);
+   
 }
